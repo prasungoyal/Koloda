@@ -696,6 +696,24 @@ open class KolodaView: UIView, DraggableCardDelegate {
         return insertedCards
     }
     
+    public func insertCardsInBeginningWith(_ count: Int) {
+        guard let dataSource = dataSource else {
+            return
+        }
+        
+        let currentItemsCount = countOfCards
+        countOfCards = dataSource.kolodaNumberOfCards(self)
+        
+        currentCardIndex = currentCardIndex + count
+        
+        delegate?.koloda(self, didShowCardAt: self.currentCardIndex)
+        
+        assert(
+            currentItemsCount + count == countOfCards,
+            "Cards count after update is not equal to data source count"
+        )
+    }
+    
     private func removeCards(_ cards: [DraggableCardView]) {
         cards.forEach { card in
             card.delegate = nil
